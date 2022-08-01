@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { IsEmail } from 'class-validator';
+import {
+  AfterInsert,
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  //   BeforeInsert,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -6,8 +13,14 @@ export class User {
   id: number;
 
   @Column()
+  @IsEmail()
   email: string;
 
   @Column()
   password: string;
+
+  @AfterInsert()
+  logInsert() {
+    console.log(`inserted into database with ${this.id}`);
+  }
 }
