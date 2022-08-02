@@ -9,6 +9,8 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
-  await app.listen(3000);
+  await app.listen(3000, () => {
+    console.log(`Api listen to traffic on port 3000`);
+  });
 }
 bootstrap();

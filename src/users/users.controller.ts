@@ -15,6 +15,10 @@ export class UserController {
 
   @Post('/login')
   async loginUser(@Body() body: LoginUserDto) {
-    //
+    return body;
+  }
+  @Get('/:id')
+  async getUser(@Param('id') id: string) {
+    return this.UsersService.findOne(parseInt(id));
   }
 }
