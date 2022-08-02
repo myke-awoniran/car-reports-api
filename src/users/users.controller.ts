@@ -1,3 +1,4 @@
+import { Query } from '@nestjs/common';
 import { Body, Controller, Inject } from '@nestjs/common';
 import { Post, Get, Patch, Param } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dtos';
@@ -17,8 +18,14 @@ export class UserController {
   async loginUser(@Body() body: LoginUserDto) {
     return body;
   }
-  @Get('/:id')
+
+  @Get('users/:id')
   async getUser(@Param('id') id: string) {
     return this.UsersService.findOne(parseInt(id));
+  }
+
+  @Get('/users')
+  async getAllUsers(@Query('email') email: string) {
+    return this.UsersService.find(email);
   }
 }

@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
+import { Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { NotFoundException } from '@nestjs/common';
 
 @Injectable()
@@ -14,11 +14,12 @@ export class UsersService {
   }
 
   async findOne(id) {
-    return this.repo.findOne(id);
+    return this.repo.findOneBy({ id });
   }
 
-  async find() {
-    return this.repo.find();
+  async find(email) {
+    const users = await this.repo.findBy({ email });
+    return users;
   }
 
   async update(id, attrs: Partial<User>) {
