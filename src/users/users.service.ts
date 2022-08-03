@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NotFoundException } from '@nestjs/common';
+import { NotAcceptableException } from '@nestjs/common';
 
 @Injectable()
 export class UsersService {
@@ -14,7 +15,10 @@ export class UsersService {
   }
 
   async findOne(id) {
-    return this.repo.findOneBy({ id });
+    const user = await this.repo.findOneBy({ id });
+    if (!user)
+      throw new NotFoundException('no user found with the provided id');
+    return user;
   }
 
   async find(email) {
@@ -23,16 +27,20 @@ export class UsersService {
   }
 
   async update(id, attrs: Partial<User>) {
-    const user = await this.repo.findOne(id);
+    const user = await this.repo.findOneBy({ id });
     if (!user)
       throw new NotFoundException('no user found with the provided id');
     Object.assign(user, attrs);
-    return this.repo.save(user);
+    return await this.repo.save(user);
   }
 
   async remove(id) {
-    const user = await this.repo.findOne(id);
+    const user = await this.repo.findOneBy({ id });
     if (!user) throw new NotFoundException('no use found with the provided id');
-    return await this.repo.remove(user);
+    await this.repo.remove(user);
+    return {
+      status: 'success',
+      message: 'user deleted successfully',
+    };
   }
 }
