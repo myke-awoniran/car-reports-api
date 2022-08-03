@@ -1,11 +1,10 @@
 import { Query } from '@nestjs/common';
-import { Body, Controller } from '@nestjs/common';
-import { Post, Get, Patch, Param, Delete } from '@nestjs/common';
-import { CreateUserDto } from './dtos/create-user.dtos';
-import { LoginUserDto } from './dtos/login-user.dto';
-import { UsersService } from './users.service';
 import { AuthService } from './auth.service';
+import { UsersService } from './users.service';
+import { Body, Controller } from '@nestjs/common';
 import { updateUserDto } from './dtos/update-user.dto';
+import { CreateUserDto } from './dtos/create-user.dtos';
+import { Post, Get, Patch, Param, Delete } from '@nestjs/common';
 
 @Controller('auth')
 export class UserController {
@@ -20,8 +19,8 @@ export class UserController {
   }
 
   @Post('/login')
-  async loginUser(@Body() body: LoginUserDto) {
-    return body;
+  async loginUser(@Body() body: CreateUserDto) {
+    return this.AuthService.signin(body.email, body.password);
   }
 
   @Get('users/:id')

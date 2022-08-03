@@ -1,8 +1,13 @@
 import { promisify } from 'util';
 import { UsersService } from './users.service';
 import { randomBytes, scrypt as _scrypt } from 'crypto';
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { dumbUser } from 'src/helpers/dumps';
+
 const scrypt = promisify(_scrypt);
 
 @Injectable()
@@ -24,14 +29,16 @@ export class AuthService {
     const result = `${salt}.${hash.toString('hex')}`;
     //create a new user and save it
     const user = await this.UserService.createUser(email, result);
-    return user;
+    return dumbUser(user);
   }
 
   async signin(email: string, password: string) {
-    //Login function
-    if (!email || !password)
-      throw new BadRequestException('invalid credentials');
     const [user] = await this.UserService.find(email);
     if (!user) throw new NotFoundException('invalid credentials');
+    const [salt, storedHash] = user.password.split('.');
+    const hash = (await scrypt(password, salt, 32)) as Buffer;
+    if (storedHash === hash.toString('hex')) return dumbUser(user);
+    // guard clause to break execution,  if-return
+    throw new BadRequestException('invalid credentials');
   }
 }
