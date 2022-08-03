@@ -28,10 +28,10 @@ export class AuthService {
   }
 
   async signin(email: string, password: string) {
+    //Login function
     if (!email || !password)
       throw new BadRequestException('invalid credentials');
-    const user = await this.UserService.find(email);
-    if (!user.length)
-      throw new NotFoundException('invalid username or password');
+    const [user] = await this.UserService.find(email);
+    if (!user) throw new NotFoundException('invalid credentials');
   }
 }
