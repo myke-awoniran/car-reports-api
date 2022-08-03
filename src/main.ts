@@ -1,8 +1,9 @@
-require('dotenv').config();
+// require('dotenv').config();
 
-import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common/pipes';
+
 const morgan = require('morgan');
 
 async function bootstrap() {
