@@ -10,7 +10,7 @@ export async function dumbUser(user: User) {
   return {
     user_id: user.id,
     email: user.email,
-    token: await signToken(user.id),
+    access_token: await signToken(user.id),
   };
 }
 console.log(process.env.JWT_SECRET);

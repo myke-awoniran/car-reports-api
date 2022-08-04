@@ -4,7 +4,8 @@ import { UsersService } from './users.service';
 import { Body, Controller } from '@nestjs/common';
 import { updateUserDto } from './dtos/update-user.dto';
 import { CreateUserDto } from './dtos/create-user.dtos';
-import { Post, Get, Patch, Param, Delete } from '@nestjs/common';
+import { Post, Get, Patch, Param, Delete, Session } from '@nestjs/common';
+import { CurrentUser } from './decorators/current-user.decorator';
 
 @Controller('auth')
 export class UserController {
@@ -14,8 +15,9 @@ export class UserController {
   ) {}
 
   @Post('/signup')
-  async createUser(@Body() body: CreateUserDto) {
-    return this.AuthService.signup(body.email, body.password);
+  async createUser(@Body() body: CreateUserDto, @Session() session: any) {
+    const user = await this.AuthService.signup(body.email, body.password);
+    session.userId = user.user_id;
   }
 
   @Post('/login')
@@ -41,5 +43,10 @@ export class UserController {
   @Patch('/users/:id')
   async updateUser(@Param('id') id: string, @Body() body: updateUserDto) {
     return await this.UsersService.update(parseInt(id), body);
+  }
+
+  @Get('/whoami')
+  whoAmI(@CurrentUser() user: string) {
+    return user;
   }
 }
