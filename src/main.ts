@@ -1,9 +1,7 @@
 const morgan = require('morgan');
-
 import { AppModule } from './app.module';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common/pipes';
-
 const cookieSession = require('cookie-session');
 
 async function bootstrap() {
@@ -20,7 +18,7 @@ async function bootstrap() {
     }),
   );
   await app.listen(3000, () => {
-    console.log(`Api listen to traffic on port 3000`);
+    console.log(`listening to traffic on port 3000`);
   });
 }
 bootstrap();
