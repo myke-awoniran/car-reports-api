@@ -5,7 +5,7 @@ interface User {
   email: string;
 }
 
-// this is made for data consistency
+// THIS IS USED FOR DATA CONSISTENCY
 export async function dumbUser(user: User) {
   return {
     user_id: user.id,
@@ -13,7 +13,6 @@ export async function dumbUser(user: User) {
     access_token: await signToken(user.id),
   };
 }
-console.log(process.env.JWT_SECRET);
 
 export async function signToken(id: number) {
   return jwt.sign({ id }, 'ju12ir982riwfl2o4r9iw');
