@@ -13,6 +13,10 @@ export class User {
   @Column()
   password: string;
 
+  //   @BeforeInsert() {
+  //   // return await bcrypt.hash(this.password,)
+  // }
+
   @AfterInsert()
   logInsert() {
     console.log(`inserted into database with ${this.id}`);
