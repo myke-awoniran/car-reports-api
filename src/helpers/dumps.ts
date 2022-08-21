@@ -15,5 +15,5 @@ export async function dumbUser(user: User) {
 }
 
 export async function signToken(id: number) {
-  return jwt.sign({ id }, 'ju12ir982riwfl2o4r9iw');
+  return jwt.sign({ id }, 'ju12ir982ril29iw');
 }
